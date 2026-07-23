@@ -465,6 +465,38 @@
             font-size: 0.88rem;
         }
 
+        .member-card {
+            margin-top: 16px;
+            border: 1px solid #dcc8b0;
+            border-radius: 12px;
+            padding: 14px;
+            background: #f9f3ec;
+        }
+
+        .member-card-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .member-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .member-save-btn {
+            border: none;
+            background: linear-gradient(135deg, #a16b4d, #7d5a3a);
+            color: #fff;
+            padding: 11px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
         /* Primary Action Buttons */
         .btn-primary {
             width: 100%;
@@ -736,6 +768,12 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="member-card">
+                        <div class="member-card-title">Üye Ol / Bilgilerimi Kaydet</div>
+                        <p>Bu bilgiler sonraki ziyaretlerde otomatik olarak doldurulur.</p>
+                        <button type="button" class="member-save-btn" onclick="saveMemberProfile()">Bilgilerimi Kaydet</button>
+                    </div>
                 </div>
 
                 <!-- Cart Total & Proceed -->
@@ -935,6 +973,7 @@
             renderStoreProducts();
             document.getElementById('account-holder-name').textContent = "Alıcı: " + CONFIG.accountHolder;
             document.getElementById('iban-text').textContent = CONFIG.iban;
+            loadMemberProfile();
             checkURLParams();
         });
 
@@ -1034,6 +1073,57 @@
             showToast.hideTimeout = setTimeout(() => {
                 toast.classList.remove('show');
             }, 2200);
+        }
+
+        function loadMemberProfile() {
+            const saved = localStorage.getItem('harun_store_member');
+            if (!saved) return;
+
+            try {
+                const profile = JSON.parse(saved);
+                document.getElementById('customer-input-name').value = profile.name || '';
+
+                if (profile.address) {
+                    const keys = {
+                        city: 'address-city',
+                        district: 'address-district',
+                        neighborhood: 'address-neighborhood',
+                        street: 'address-street',
+                        building: 'address-building',
+                        buildingNo: 'address-building-no',
+                        floor: 'address-floor',
+                        doorNo: 'address-door-no'
+                    };
+
+                    Object.entries(keys).forEach(([key, id]) => {
+                        if (profile.address[key]) {
+                            document.getElementById(id).value = profile.address[key];
+                        }
+                    });
+                }
+
+                showToast('Üye bilgileri otomatik yüklendi.');
+            } catch (error) {
+                console.error('Member profile load failed:', error);
+            }
+        }
+
+        function saveMemberProfile() {
+            const name = document.getElementById('customer-input-name').value.trim();
+            const address = {
+                city: document.getElementById('address-city').value.trim(),
+                district: document.getElementById('address-district').value.trim(),
+                neighborhood: document.getElementById('address-neighborhood').value.trim(),
+                street: document.getElementById('address-street').value.trim(),
+                building: document.getElementById('address-building').value.trim(),
+                buildingNo: document.getElementById('address-building-no').value.trim(),
+                floor: document.getElementById('address-floor').value.trim(),
+                doorNo: document.getElementById('address-door-no').value.trim()
+            };
+
+            const profile = { name, address };
+            localStorage.setItem('harun_store_member', JSON.stringify(profile));
+            showToast('Üye bilgileri kaydedildi.');
         }
 
         function toggleAddressForm() {
