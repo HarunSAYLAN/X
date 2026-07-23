@@ -138,8 +138,8 @@
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
             margin-bottom: 20px;
         }
 
@@ -147,10 +147,10 @@
             background: rgba(255, 250, 244, 0.95);
             border: 1px solid rgba(155, 116, 79, 0.25);
             border-radius: var(--radius-md);
-            padding: 12px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             transition: border-color 0.2s, transform 0.2s;
             min-width: 0;
             box-shadow: 0 10px 18px rgba(75, 54, 38, 0.08);
@@ -179,7 +179,7 @@
         }
 
         .product-info h4 {
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             margin-bottom: 0;
             line-height: 1.35;
             word-break: break-word;
@@ -187,7 +187,7 @@
         }
 
         .product-info p {
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--accent-blue);
             white-space: nowrap;
@@ -245,6 +245,16 @@
             display: block;
         }
 
+        @media (min-width: 980px) {
+            .product-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .store-product-card {
+                padding: 16px;
+            }
+        }
+
         @media (min-width: 900px) {
             .card {
                 padding: 30px;
@@ -270,21 +280,65 @@
             top: 12px;
             right: 12px;
             z-index: 2;
-            background: linear-gradient(135deg, #2f9e44, #1f7a34);
-            color: #fffaf6;
-            border: 1px solid rgba(31, 122, 52, 0.9);
-            padding: 7px 10px;
+            background: linear-gradient(135deg, #43c25a, #217a36);
+            color: #ffffff;
+            border: 2px solid rgba(20, 20, 20, 0.92);
+            outline: 2px solid rgba(255, 255, 255, 0.5);
+            outline-offset: 1px;
+            padding: 8px 12px;
             border-radius: 999px;
             cursor: pointer;
-            font-weight: 700;
-            font-size: 0.76rem;
-            transition: all 0.2s;
-            box-shadow: 0 6px 12px rgba(31, 122, 52, 0.22);
+            font-weight: 900;
+            font-size: 0.78rem;
+            transition: all 0.22s ease;
+            box-shadow: 0 10px 20px rgba(33, 134, 58, 0.5), 0 0 0 1px rgba(0,0,0,0.16);
+            letter-spacing: 0.2px;
         }
 
-        .btn-add-cart:hover, .btn-add-cart.added {
-            background: linear-gradient(135deg, #1f7a34, #1c6a2d);
+        .btn-add-cart:hover {
+            background: linear-gradient(135deg, #2f9e44, #145926);
             color: #fff;
+            transform: translateY(-1px) scale(1.03);
+            box-shadow: 0 14px 28px rgba(33, 134, 58, 0.58), 0 0 0 1px rgba(0,0,0,0.2);
+        }
+
+        .qty-control {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 250, 244, 0.98);
+            border: 1px solid rgba(20, 20, 20, 0.9);
+            border-radius: 999px;
+            padding: 4px;
+            box-shadow: 0 8px 18px rgba(40, 40, 40, 0.16);
+        }
+
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #43c25a, #217a36);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);
+        }
+
+        .qty-value {
+            min-width: 22px;
+            text-align: center;
+            font-size: 0.86rem;
+            font-weight: 800;
+            color: var(--text-main);
         }
 
         /* Cart Mini Summary on Home */
@@ -656,6 +710,7 @@
                 name: "X Aura Pain",
                 price: 1485,
                 colors: ["#8b5cf6", "#06b6d4"],
+                image: "https://xauraglobal.com/thumb/resimler/urun/-1741857637.60169.webp/w500/h500/zc1",
                 ingredients: ["Kırmızı Kore Ginseng", "Hidrolize Kolajen", "Glukozamin", "Saponin", "Gümüş İyonları"],
                 benefit: "Kas-eklem destekleyici, dayanıklılığı artırıcı ve daha güçlü bir günlük destek sunar."
             },
@@ -664,6 +719,7 @@
                 name: "X-Col",
                 price: 1283,
                 colors: ["#14b8a6", "#0f172a"],
+                image: "https://xauraglobal.com/thumb/resimler/urun/-1741857944.80565.webp/w500/h500/zc1",
                 ingredients: ["Collagen Type 1-2", "Hyaluronic Acid", "Spirulina Platensis", "Hydrolized Keratin", "Acacia Honey", "Vitamin C", "Vitamin E", "Aloe Vera", "B5"],
                 benefit: "Cilt elastikiyetini destekler, görünümü canlı tutar ve dokuların bakımına katkı sağlar."
             },
@@ -672,6 +728,7 @@
                 name: "X-Recovery",
                 price: 1350,
                 colors: ["#22c55e", "#0f172a"],
+                image: "https://xauraglobal.com/thumb/resimler/urun/-1741857858.03396.webp/w500/h500/zc1",
                 ingredients: ["Organik Yağlar", "Turmalin", "Mentol"],
                 benefit: "Yorgunluk sonrası toparlanma ve rahatlama sürecini desteklemek için tasarlanmıştır."
             },
@@ -680,6 +737,7 @@
                 name: "X-She",
                 price: 1215,
                 colors: ["#f59e0b", "#7c3aed"],
+                image: "https://xauraglobal.com/thumb/resimler/urun/-1741858057.48685.webp/w500/h500/zc1",
                 ingredients: ["L-Arginin", "Kırmızı Kore Ginsengi", "Kırmızı Yonca", "Muira Puama", "Suma Root", "Zencefil", "Krill Yağı", "Catuaba", "Çinko"],
                 benefit: "Enerji, performans ve genel canlılık desteği sağlar."
             },
@@ -688,6 +746,7 @@
                 name: "X-He",
                 price: 1215,
                 colors: ["#ef4444", "#fb7185"],
+                image: "https://xauraglobal.com/thumb/resimler/urun/-1741858134.85525.webp/w500/h500/zc1",
                 ingredients: ["Apimedium Grandiflorum", "L-Arginine", "Kırmızı Kore Ginsengi", "Cornus Officinalis", "Tongkat Ali", "Zencefil", "Krill Yağı", "Maca", "Çinko"],
                 benefit: "Güç, canlılık ve zindelik hissini desteklemek amacıyla formüle edilmiştir."
             },
@@ -696,6 +755,7 @@
                 name: "X-Omega",
                 price: 1080,
                 colors: ["#0ea5e9", "#1d4ed8"],
+                image: "https://xauraglobal.com/thumb/resimler/urun/-1741858214.88996.webp/w500/h500/zc1",
                 ingredients: ["Omega 3", "Krill Yağı", "Koenzim Q10", "Vitamin E", "Vitamin A", "Pregnenolone", "Resveratol", "Astaksantin", "Selenyum", "Omega 9"],
                 benefit: "Kalp, beyin ve antioksidan koruma desteği sunar."
             },
@@ -704,6 +764,7 @@
                 name: "X-Night",
                 price: 945,
                 colors: ["#111827", "#8b5cf6"],
+                image: "https://xauraglobal.com/thumb/resimler/urun/-1741858348.80643.webp/w500/h500/zc1",
                 ingredients: ["Melatonin", "Kediotu", "Sarı Kantoron", "Griffonia Simplicifolia", "Şerbetçiotu", "Altın Kök", "Lavanta Yağı", "Skullcap Herb", "Gül Yağı"],
                 benefit: "Uyku kalitesini destekler ve gece rahatlamayı kolaylaştırır."
             },
@@ -712,6 +773,7 @@
                 name: "X-12",
                 price: 810,
                 colors: ["#2dd4bf", "#2563eb"],
+                image: "https://xauraglobal.com/thumb/resimler/urun/-1741858448.78560.webp/w500/h500/zc1",
                 ingredients: ["Vitamin B1", "Vitamin B3", "Vitamin B6", "Vitamin B12", "Vitamin B7", "Kafein", "Folik Asit", "Yaşil Çay"],
                 benefit: "Enerji metabolizmasını destekler, günlük canlılık hissini artırır."
             },
@@ -720,6 +782,7 @@
                 name: "X-Dk",
                 price: 810,
                 colors: ["#e879f9", "#4f46e5"],
+                image: "https://xauraglobal.com/thumb/resimler/urun/-1741858539.65707.webp/w500/h500/zc1",
                 ingredients: ["Vitamin D3", "Vitamin K2", "Vitamin C", "Magnezyum", "Omega 9"],
                 benefit: "Kemik, bağışıklık ve genel metabolik desteği destekler."
             }
@@ -763,14 +826,27 @@
             container.innerHTML = '';
 
             PRODUCTS.forEach(product => {
-                const isSelected = cart.some(item => item.id === product.id);
-                const productImage = createProductImage(product);
+                const cartItem = cart.find(item => item.id === product.id);
+                const productImage = product.image || createProductImage(product);
                 const card = document.createElement('div');
                 card.className = 'store-product-card';
-                card.innerHTML = `
-                    <button class="btn-add-cart ${isSelected ? 'added' : ''}" onclick="toggleCart(${product.id})" title="Sepete ekle">
-                        ${isSelected ? '<i class="fa-solid fa-check"></i> Sepete Eklendi' : '<i class="fa-solid fa-plus"></i> Sepete Ekle'}
+
+                const addButtonMarkup = `
+                    <button class="btn-add-cart" onclick="changeCartQuantity(${product.id}, 1)" title="Sepete ekle">
+                        <i class="fa-solid fa-plus"></i> Sepete Ekle
                     </button>
+                `;
+
+                const quantityMarkup = cartItem ? `
+                    <div class="qty-control" title="Ürün adedi">
+                        <button class="qty-btn" onclick="changeCartQuantity(${product.id}, -1)">−</button>
+                        <span class="qty-value">${cartItem.quantity}</span>
+                        <button class="qty-btn" onclick="changeCartQuantity(${product.id}, 1)">+</button>
+                    </div>
+                ` : addButtonMarkup;
+
+                card.innerHTML = `
+                    ${quantityMarkup}
                     <img class="product-thumb" src="${productImage}" alt="${product.name}">
                     <div class="product-info">
                         <div>
@@ -791,15 +867,20 @@
             });
         }
 
-        // Sepete Ekle / Çıkar
-        function toggleCart(productId) {
+        // Sepete Ekle / Adet Artır / Azalt
+        function changeCartQuantity(productId, delta) {
             const product = PRODUCTS.find(p => p.id === productId);
             const index = cart.findIndex(item => item.id === productId);
 
-            if (index > -1) {
-                cart.splice(index, 1);
+            if (index === -1) {
+                if (delta <= 0) return;
+                cart.push({ ...product, quantity: 1 });
             } else {
-                cart.push(product);
+                cart[index].quantity += delta;
+
+                if (cart[index].quantity <= 0) {
+                    cart.splice(index, 1);
+                }
             }
 
             updateCartUI();
@@ -820,8 +901,9 @@
 
         // Sepet Arayüz Güncelleme
         function updateCartUI() {
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            document.getElementById('cart-count').textContent = cart.length;
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = itemCount;
             document.getElementById('home-total-price').textContent = total.toLocaleString('tr-TR', { minimumFractionDigits: 2 }) + ' TL';
         }
 
@@ -845,14 +927,14 @@
             let productNamesArr = [];
 
             cart.forEach(item => {
-                total += item.price;
-                productNamesArr.push(item.name);
+                total += item.price * item.quantity;
+                productNamesArr.push(`${item.name}${item.quantity > 1 ? ' x' + item.quantity : ''}`);
 
                 const li = document.createElement('li');
                 li.className = 'product-item';
                 li.innerHTML = `
-                    <span>${item.name}</span>
-                    <span style="font-weight:600">${item.price.toLocaleString('tr-TR')} TL</span>
+                    <span>${item.name}${item.quantity > 1 ? ' x' + item.quantity : ''}</span>
+                    <span style="font-weight:600">${(item.price * item.quantity).toLocaleString('tr-TR')} TL</span>
                 `;
                 productListContainer.appendChild(li);
             });
@@ -916,7 +998,8 @@
                 cart = productNames.map((p, index) => ({
                     id: 999 + index,
                     name: p.trim(),
-                    price: index === 0 ? price : 0
+                    price: index === 0 ? price : 0,
+                    quantity: 1
                 }));
 
                 updateCartUI();
