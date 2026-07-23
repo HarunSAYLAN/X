@@ -10,14 +10,14 @@
     
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --card-border: #334155;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-purple: #8b5cf6;
-            --accent-blue: #3b82f6;
-            --accent-green: #22c55e;
+            --bg-dark: #f3ede6;
+            --card-bg: rgba(255, 250, 244, 0.88);
+            --card-border: #d8c8b5;
+            --text-main: #4b3626;
+            --text-muted: #7b6553;
+            --accent-purple: #a16b4d;
+            --accent-blue: #7d5a3a;
+            --accent-green: #9c7a53;
             --whatsapp-green: #25d366;
             --radius-lg: 20px;
             --radius-md: 12px;
@@ -39,15 +39,15 @@
             justify-content: center;
             align-items: flex-start;
             padding: 20px 12px;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.15) 0px, transparent 50%);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(161, 107, 77, 0.18) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(125, 90, 58, 0.18) 0px, transparent 50%);
             background-attachment: fixed;
         }
 
         .container {
             width: 100%;
-            max-width: 480px;
+            max-width: 1180px;
             animation: fadeIn 0.5s ease-in-out;
         }
 
@@ -138,24 +138,27 @@
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
             gap: 12px;
             margin-bottom: 20px;
         }
 
         .store-product-card {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 250, 244, 0.95);
+            border: 1px solid rgba(155, 116, 79, 0.25);
             border-radius: var(--radius-md);
             padding: 12px;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, transform 0.2s;
             min-width: 0;
+            box-shadow: 0 10px 18px rgba(75, 54, 38, 0.08);
+            position: relative;
         }
 
         .store-product-card:hover {
+            transform: translateY(-2px);
             border-color: var(--accent-purple);
         }
 
@@ -180,6 +183,7 @@
             margin-bottom: 0;
             line-height: 1.35;
             word-break: break-word;
+            color: var(--text-main);
         }
 
         .product-info p {
@@ -189,30 +193,108 @@
             white-space: nowrap;
         }
 
-        .btn-add-cart {
-            background: rgba(139, 92, 246, 0.15);
-            color: var(--accent-purple);
-            border: 1px solid var(--accent-purple);
-            padding: 8px 12px;
-            border-radius: 8px;
+        .product-ingredients {
+            margin: 0;
+            padding-left: 18px;
+            display: none;
+            gap: 4px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .product-ingredients.show {
+            display: grid;
+        }
+
+        .product-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .info-btn {
+            border: none;
+            background: #efe2d2;
+            color: var(--text-main);
+            border-radius: 999px;
+            padding: 7px 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
             transition: all 0.2s;
         }
 
+        .info-btn:hover {
+            background: #ddc6a8;
+        }
+
+        .product-benefit {
+            display: none;
+            font-size: 0.8rem;
+            line-height: 1.45;
+            color: var(--text-main);
+            background: #fffaf5;
+            border: 1px solid #ddc6a8;
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+
+        .product-benefit.show {
+            display: block;
+        }
+
+        @media (min-width: 900px) {
+            .card {
+                padding: 30px;
+            }
+
+            .brand-header {
+                margin-bottom: 24px;
+            }
+
+            .brand-logo {
+                font-size: 1.5rem;
+            }
+
+            .btn-primary,
+            .btn-whatsapp {
+                max-width: 360px;
+                margin: 0 auto;
+            }
+        }
+
+        .btn-add-cart {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
+            background: rgba(161, 107, 77, 0.96);
+            color: #fffaf6;
+            border: 1px solid rgba(161, 107, 77, 0.9);
+            padding: 7px 10px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.76rem;
+            transition: all 0.2s;
+            box-shadow: 0 6px 12px rgba(75, 54, 38, 0.18);
+        }
+
         .btn-add-cart:hover, .btn-add-cart.added {
-            background: var(--accent-purple);
+            background: var(--accent-blue);
             color: #fff;
         }
 
         /* Cart Mini Summary on Home */
         .mini-cart {
-            background: rgba(15, 23, 42, 0.8);
+            background: #f9f3ec;
             border-radius: var(--radius-md);
-            padding: 16px;
+            padding: 18px;
             margin-bottom: 20px;
-            border: 1px dashed var(--card-border);
+            border: 1px solid #c9b59c;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4);
         }
 
         .mini-cart-header {
@@ -221,6 +303,8 @@
             align-items: center;
             font-weight: 700;
             font-size: 1rem;
+            color: var(--text-main);
+            gap: 12px;
         }
 
         /* Form Inputs */
@@ -230,32 +314,35 @@
 
         .form-group label {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             color: var(--text-muted);
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            font-weight: 700;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--card-border);
-            border-radius: 8px;
-            color: #fff;
+            padding: 13px 14px;
+            background: #fffdf9;
+            border: 1px solid #bf9f82;
+            border-radius: 10px;
+            color: var(--text-main);
             font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-shadow: inset 0 1px 2px rgba(75, 54, 38, 0.05);
         }
 
         .form-control:focus {
             border-color: var(--accent-purple);
+            box-shadow: 0 0 0 3px rgba(161, 107, 77, 0.15);
         }
 
         /* Primary Action Buttons */
         .btn-primary {
             width: 100%;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
-            color: #fff;
+            background: linear-gradient(135deg, #9c7a53, #7d5a3a);
+            color: #fffaf6;
             border: none;
             padding: 16px;
             border-radius: var(--radius-md);
@@ -266,7 +353,13 @@
             justify-content: center;
             align-items: center;
             gap: 10px;
-            transition: opacity 0.2s;
+            transition: opacity 0.2s, transform 0.2s;
+            box-shadow: 0 10px 16px rgba(124, 93, 69, 0.22);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
         }
 
         .btn-primary:hover {
@@ -291,25 +384,33 @@
         }
 
         .order-summary {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: #fdf8f1;
+            border: 1px solid #c9b59c;
             border-radius: var(--radius-md);
-            padding: 16px;
+            padding: 18px;
             margin-bottom: 20px;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5);
         }
 
         .product-list {
             list-style: none;
             margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         .product-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px dashed var(--card-border);
+            gap: 12px;
+            padding: 10px 12px;
+            border: 1px solid #dcc8b0;
+            border-radius: 10px;
             font-size: 0.9rem;
+            background: #fffaf5;
+            color: var(--text-main);
         }
 
         .product-item:last-child {
@@ -322,10 +423,11 @@
             align-items: center;
             margin-top: 12px;
             padding-top: 12px;
-            border-top: 1px solid var(--card-border);
-            font-weight: 700;
+            border-top: 1px solid #c9b59c;
+            font-weight: 800;
             font-size: 1.1rem;
             color: var(--accent-blue);
+            gap: 12px;
         }
 
         /* IBAN Card Component */
@@ -553,15 +655,78 @@
 
         // 2. Örnek Ürün Listesi
         const PRODUCTS = [
-            { id: 1, name: "X Aura Pain", price: 1485, colors: ["#8b5cf6", "#06b6d4"] },
-            { id: 2, name: "X-Col", price: 1283, colors: ["#14b8a6", "#0f172a"] },
-            { id: 3, name: "X-Recovery", price: 1350, colors: ["#22c55e", "#0f172a"] },
-            { id: 4, name: "X-She", price: 1215, colors: ["#f59e0b", "#7c3aed"] },
-            { id: 5, name: "X-He", price: 1215, colors: ["#ef4444", "#fb7185"] },
-            { id: 6, name: "X-Omega", price: 1080, colors: ["#0ea5e9", "#1d4ed8"] },
-            { id: 7, name: "X-Night", price: 945, colors: ["#111827", "#8b5cf6"] },
-            { id: 8, name: "X-12", price: 810, colors: ["#2dd4bf", "#2563eb"] },
-            { id: 9, name: "X-Dk", price: 810, colors: ["#e879f9", "#4f46e5"] }
+            {
+                id: 1,
+                name: "X Aura Pain",
+                price: 1485,
+                colors: ["#8b5cf6", "#06b6d4"],
+                ingredients: ["Kırmızı Kore Ginseng", "Hidrolize Kolajen", "Glukozamin", "Saponin", "Gümüş İyonları"],
+                benefit: "Kas-eklem destekleyici, dayanıklılığı artırıcı ve daha güçlü bir günlük destek sunar."
+            },
+            {
+                id: 2,
+                name: "X-Col",
+                price: 1283,
+                colors: ["#14b8a6", "#0f172a"],
+                ingredients: ["Collagen Type 1-2", "Hyaluronic Acid", "Spirulina Platensis", "Hydrolized Keratin", "Acacia Honey", "Vitamin C", "Vitamin E", "Aloe Vera", "B5"],
+                benefit: "Cilt elastikiyetini destekler, görünümü canlı tutar ve dokuların bakımına katkı sağlar."
+            },
+            {
+                id: 3,
+                name: "X-Recovery",
+                price: 1350,
+                colors: ["#22c55e", "#0f172a"],
+                ingredients: ["Organik Yağlar", "Turmalin", "Mentol"],
+                benefit: "Yorgunluk sonrası toparlanma ve rahatlama sürecini desteklemek için tasarlanmıştır."
+            },
+            {
+                id: 4,
+                name: "X-She",
+                price: 1215,
+                colors: ["#f59e0b", "#7c3aed"],
+                ingredients: ["L-Arginin", "Kırmızı Kore Ginsengi", "Kırmızı Yonca", "Muira Puama", "Suma Root", "Zencefil", "Krill Yağı", "Catuaba", "Çinko"],
+                benefit: "Enerji, performans ve genel canlılık desteği sağlar."
+            },
+            {
+                id: 5,
+                name: "X-He",
+                price: 1215,
+                colors: ["#ef4444", "#fb7185"],
+                ingredients: ["Apimedium Grandiflorum", "L-Arginine", "Kırmızı Kore Ginsengi", "Cornus Officinalis", "Tongkat Ali", "Zencefil", "Krill Yağı", "Maca", "Çinko"],
+                benefit: "Güç, canlılık ve zindelik hissini desteklemek amacıyla formüle edilmiştir."
+            },
+            {
+                id: 6,
+                name: "X-Omega",
+                price: 1080,
+                colors: ["#0ea5e9", "#1d4ed8"],
+                ingredients: ["Omega 3", "Krill Yağı", "Koenzim Q10", "Vitamin E", "Vitamin A", "Pregnenolone", "Resveratol", "Astaksantin", "Selenyum", "Omega 9"],
+                benefit: "Kalp, beyin ve antioksidan koruma desteği sunar."
+            },
+            {
+                id: 7,
+                name: "X-Night",
+                price: 945,
+                colors: ["#111827", "#8b5cf6"],
+                ingredients: ["Melatonin", "Kediotu", "Sarı Kantoron", "Griffonia Simplicifolia", "Şerbetçiotu", "Altın Kök", "Lavanta Yağı", "Skullcap Herb", "Gül Yağı"],
+                benefit: "Uyku kalitesini destekler ve gece rahatlamayı kolaylaştırır."
+            },
+            {
+                id: 8,
+                name: "X-12",
+                price: 810,
+                colors: ["#2dd4bf", "#2563eb"],
+                ingredients: ["Vitamin B1", "Vitamin B3", "Vitamin B6", "Vitamin B12", "Vitamin B7", "Kafein", "Folik Asit", "Yaşil Çay"],
+                benefit: "Enerji metabolizmasını destekler, günlük canlılık hissini artırır."
+            },
+            {
+                id: 9,
+                name: "X-Dk",
+                price: 810,
+                colors: ["#e879f9", "#4f46e5"],
+                ingredients: ["Vitamin D3", "Vitamin K2", "Vitamin C", "Magnezyum", "Omega 9"],
+                benefit: "Kemik, bağışıklık ve genel metabolik desteği destekler."
+            }
         ];
 
         function createProductImage(product) {
@@ -607,6 +772,9 @@
                 const card = document.createElement('div');
                 card.className = 'store-product-card';
                 card.innerHTML = `
+                    <button class="btn-add-cart ${isSelected ? 'added' : ''}" onclick="toggleCart(${product.id})" title="Sepete ekle">
+                        ${isSelected ? '<i class="fa-solid fa-check"></i> Eklendi' : '<i class="fa-solid fa-plus"></i> Ekle'}
+                    </button>
                     <img class="product-thumb" src="${productImage}" alt="${product.name}">
                     <div class="product-info">
                         <div>
@@ -614,9 +782,14 @@
                         </div>
                         <p>${product.price.toLocaleString('tr-TR')} TL</p>
                     </div>
-                    <button class="btn-add-cart ${isSelected ? 'added' : ''}" onclick="toggleCart(${product.id})">
-                        ${isSelected ? '<i class="fa-solid fa-check"></i> Eklendi' : '<i class="fa-solid fa-plus"></i> Ekle'}
-                    </button>
+                    <div class="product-actions">
+                        <button class="info-btn" onclick="toggleBenefit(${product.id})">Ne İşe Yarar?</button>
+                        <button class="info-btn" onclick="toggleIngredients(${product.id})">İçerik</button>
+                    </div>
+                    <div class="product-benefit" data-benefit-for="${product.id}">${product.benefit}</div>
+                    <ul class="product-ingredients" data-ingredients-for="${product.id}">
+                        ${product.ingredients.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
                 `;
                 container.appendChild(card);
             });
@@ -635,6 +808,18 @@
 
             updateCartUI();
             renderStoreProducts();
+        }
+
+        function toggleBenefit(productId) {
+            const target = document.querySelector(`[data-benefit-for="${productId}"]`);
+            if (!target) return;
+            target.classList.toggle('show');
+        }
+
+        function toggleIngredients(productId) {
+            const target = document.querySelector(`[data-ingredients-for="${productId}"]`);
+            if (!target) return;
+            target.classList.toggle('show');
         }
 
         // Sepet Arayüz Güncelleme
