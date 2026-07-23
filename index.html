@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sağlıklı Yaşam Store | Premium Alışveriş</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-purple: #8b5cf6;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+            --whatsapp-green: #25d366;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 12px;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.15) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Header / Logo */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4px;
+        }
+
+        .brand-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-logo i {
+            color: var(--accent-purple);
+            -webkit-text-fill-color: initial;
+        }
+
+        .cart-badge-btn {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cart-count {
+            background: var(--accent-purple);
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+
+        /* Dynamic Pages Transition */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Card Wrapper */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        /* Home Page: Product List */
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .store-product-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: border-color 0.2s;
+            min-width: 0;
+        }
+
+        .store-product-card:hover {
+            border-color: var(--accent-purple);
+        }
+
+        .product-thumb {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border-radius: 10px;
+            display: block;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+
+        .product-info h4 {
+            font-size: 0.85rem;
+            margin-bottom: 0;
+            line-height: 1.35;
+            word-break: break-word;
+        }
+
+        .product-info p {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            white-space: nowrap;
+        }
+
+        .btn-add-cart {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--accent-purple);
+            border: 1px solid var(--accent-purple);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .btn-add-cart:hover, .btn-add-cart.added {
+            background: var(--accent-purple);
+            color: #fff;
+        }
+
+        /* Cart Mini Summary on Home */
+        .mini-cart {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px dashed var(--card-border);
+        }
+
+        .mini-cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-purple);
+        }
+
+        /* Primary Action Buttons */
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            color: #fff;
+            border: none;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        /* Checkout Page Components */
+        .btn-back {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .btn-back:hover {
+            color: var(--text-main);
+        }
+
+        .order-summary {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .product-list {
+            list-style: none;
+            margin-bottom: 12px;
+        }
+
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--card-border);
+            font-size: 0.9rem;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        .price-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--card-border);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+        }
+
+        /* IBAN Card Component */
+        .iban-card {
+            background: linear-gradient(135deg, #1e1b4b 0%, #311b92 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .bank-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .account-holder {
+            font-size: 0.95rem;
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .iban-number {
+            font-family: monospace;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            word-break: break-all;
+        }
+
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: 8px;
+            flex-shrink: 0;
+        }
+
+        .btn-copy.copied {
+            background: var(--accent-green);
+        }
+
+        /* WhatsApp Button */
+        .btn-whatsapp {
+            width: 100%;
+            background: var(--whatsapp-green);
+            color: #fff;
+            border: none;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            box-shadow: 0 10px 15px -3px rgba(37, 211, 102, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .btn-whatsapp:hover {
+            transform: translateY(-2px);
+        }
+
+        .info-note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Brand Header -->
+        <div class="brand-header">
+            <div class="brand-logo">
+                <i class="fa-solid fa-gem"></i> SAĞLIKLI YAŞAM STORE
+            </div>
+            <div class="cart-badge-btn" onclick="goToCheckout()">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 1: ANA SAYFA (MAĞAZA) ================= -->
+        <div id="page-home" class="page active">
+            <div class="card">
+                <div class="section-title">
+                    <i class="fa-solid fa-store" style="color: var(--accent-purple);"></i> Popüler Ürünler
+                </div>
+
+                <!-- Dynamically Populated Products -->
+                <div class="product-grid" id="store-products"></div>
+
+                <!-- Customer Details Form -->
+                <div class="form-group">
+                    <label for="customer-input-name"><i class="fa-regular fa-user"></i> Adınız Soyadınız</label>
+                    <input type="text" id="customer-input-name" class="form-control" placeholder="Örn: Ahmet Yılmaz">
+                </div>
+
+                <!-- Cart Total & Proceed -->
+                <div class="mini-cart">
+                    <div class="mini-cart-header">
+                        <span>Toplam Tutar:</span>
+                        <span id="home-total-price" style="color: var(--accent-blue);">0.00 TL</span>
+                    </div>
+                </div>
+
+                <button class="btn-primary" onclick="goToCheckout()">
+                    Siparişi Tamamla <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 2: ÖDEME EKRANI ================= -->
+        <div id="page-checkout" class="page">
+            <div class="card">
+                <button class="btn-back" onclick="goToHome()">
+                    <i class="fa-solid fa-arrow-left"></i> Ürünlere Dön
+                </button>
+
+                <div class="section-title">
+                    <i class="fa-solid fa-file-invoice-dollar" style="color: var(--accent-purple);"></i> Ödeme ve Sipariş Onayı
+                </div>
+
+                <!-- Customer Greeting -->
+                <div style="margin-bottom: 16px;">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Müşteri:</span>
+                    <h3 id="checkout-customer-name" style="color: var(--text-main); font-size: 1.2rem;">-</h3>
+                </div>
+
+                <!-- Selected Items List -->
+                <div class="order-summary">
+                    <ul class="product-list" id="checkout-product-list"></ul>
+                    <div class="price-total">
+                        <span>Ödenecek Tutar:</span>
+                        <span id="checkout-total-price">0.00 TL</span>
+                    </div>
+                </div>
+
+                <!-- Bank Card Component -->
+                <div class="iban-card">
+                    <div class="bank-title">
+                        <span>Banka Havalesi / EFT</span>
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                    <div class="account-holder" id="account-holder-name">Alıcı: Harun SAYLAN</div>
+                    <div class="iban-number">
+                        <span id="iban-text">TR30 0001 5001 5800 7302 7965 95</span>
+                        <button class="btn-copy" id="copy-btn" onclick="copyIBAN()">
+                            <i class="fa-regular fa-copy"></i>
+                            <span id="copy-text">Kopyala</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- WhatsApp Confirmation Button -->
+                <a href="#" id="whatsapp-btn" target="_blank" class="btn-whatsapp pulse">
+                    <i class="fa-brands fa-whatsapp fa-lg"></i>
+                    Dekont Gönder & Onayla
+                </a>
+
+                <div class="info-note">
+                    <i class="fa-solid fa-shield-halved"></i> Ödeme sonrası dekontunuzu iletmeyi unutmayınız.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        // 1. Sabit Bilgiler (Belirttiğiniz Güncel Veriler)
+        const CONFIG = {
+            iban: "TR30 0001 5001 5800 7302 7965 95",
+            accountHolder: "Harun SAYLAN",
+            phone: "905325039279"
+        };
+
+        // 2. Örnek Ürün Listesi
+        const PRODUCTS = [
+            { id: 1, name: "X Aura Pain", price: 1485, colors: ["#8b5cf6", "#06b6d4"] },
+            { id: 2, name: "X-Col", price: 1283, colors: ["#14b8a6", "#0f172a"] },
+            { id: 3, name: "X-Recovery", price: 1350, colors: ["#22c55e", "#0f172a"] },
+            { id: 4, name: "X-She", price: 1215, colors: ["#f59e0b", "#7c3aed"] },
+            { id: 5, name: "X-He", price: 1215, colors: ["#ef4444", "#fb7185"] },
+            { id: 6, name: "X-Omega", price: 1080, colors: ["#0ea5e9", "#1d4ed8"] },
+            { id: 7, name: "X-Night", price: 945, colors: ["#111827", "#8b5cf6"] },
+            { id: 8, name: "X-12", price: 810, colors: ["#2dd4bf", "#2563eb"] },
+            { id: 9, name: "X-Dk", price: 810, colors: ["#e879f9", "#4f46e5"] }
+        ];
+
+        function createProductImage(product) {
+            const [colorA, colorB] = product.colors;
+            const svg = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+                    <defs>
+                        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="${colorA}" />
+                            <stop offset="100%" stop-color="${colorB}" />
+                        </linearGradient>
+                    </defs>
+                    <rect width="800" height="600" rx="28" fill="url(#g)" />
+                    <circle cx="120" cy="120" r="90" fill="rgba(255,255,255,0.12)" />
+                    <circle cx="680" cy="480" r="110" fill="rgba(255,255,255,0.12)" />
+                    <rect x="70" y="70" width="660" height="460" rx="24" fill="rgba(15,23,42,0.35)" stroke="rgba(255,255,255,0.35)" />
+                    <text x="400" y="250" text-anchor="middle" font-size="64" font-family="Arial, Helvetica, sans-serif" font-weight="700" fill="#ffffff">${product.name}</text>
+                    <text x="400" y="330" text-anchor="middle" font-size="28" font-family="Arial, Helvetica, sans-serif" fill="rgba(255,255,255,0.9)">Premium Health Formula</text>
+                </svg>
+            `;
+            return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+        }
+
+        // Sepet Durumu (State)
+        let cart = [];
+
+        // Sayfa Yüklendiğinde
+        document.addEventListener('DOMContentLoaded', () => {
+            renderStoreProducts();
+            document.getElementById('account-holder-name').textContent = "Alıcı: " + CONFIG.accountHolder;
+            document.getElementById('iban-text').textContent = CONFIG.iban;
+            checkURLParams();
+        });
+
+        // Mağaza Ürünlerini Ekrana Basma
+        function renderStoreProducts() {
+            const container = document.getElementById('store-products');
+            container.innerHTML = '';
+
+            PRODUCTS.forEach(product => {
+                const isSelected = cart.some(item => item.id === product.id);
+                const productImage = createProductImage(product);
+                const card = document.createElement('div');
+                card.className = 'store-product-card';
+                card.innerHTML = `
+                    <img class="product-thumb" src="${productImage}" alt="${product.name}">
+                    <div class="product-info">
+                        <div>
+                            <h4>${product.name}</h4>
+                        </div>
+                        <p>${product.price.toLocaleString('tr-TR')} TL</p>
+                    </div>
+                    <button class="btn-add-cart ${isSelected ? 'added' : ''}" onclick="toggleCart(${product.id})">
+                        ${isSelected ? '<i class="fa-solid fa-check"></i> Eklendi' : '<i class="fa-solid fa-plus"></i> Ekle'}
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Sepete Ekle / Çıkar
+        function toggleCart(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            const index = cart.findIndex(item => item.id === productId);
+
+            if (index > -1) {
+                cart.splice(index, 1);
+            } else {
+                cart.push(product);
+            }
+
+            updateCartUI();
+            renderStoreProducts();
+        }
+
+        // Sepet Arayüz Güncelleme
+        function updateCartUI() {
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cart-count').textContent = cart.length;
+            document.getElementById('home-total-price').textContent = total.toLocaleString('tr-TR', { minimumFractionDigits: 2 }) + ' TL';
+        }
+
+        // Sayfa Geçişleri
+        function goToCheckout() {
+            if (cart.length === 0) {
+                alert('Lütfen önce sepetinize en az bir ürün ekleyin!');
+                return;
+            }
+
+            const customerNameInput = document.getElementById('customer-input-name').value.trim();
+            const customerName = customerNameInput || "Değerli Müşterimiz";
+
+            // Ödeme Ekranı Detaylarını Hazırla
+            document.getElementById('checkout-customer-name').textContent = customerName;
+            
+            const productListContainer = document.getElementById('checkout-product-list');
+            productListContainer.innerHTML = '';
+            
+            let total = 0;
+            let productNamesArr = [];
+
+            cart.forEach(item => {
+                total += item.price;
+                productNamesArr.push(item.name);
+
+                const li = document.createElement('li');
+                li.className = 'product-item';
+                li.innerHTML = `
+                    <span>${item.name}</span>
+                    <span style="font-weight:600">${item.price.toLocaleString('tr-TR')} TL</span>
+                `;
+                productListContainer.appendChild(li);
+            });
+
+            const formattedTotal = total.toLocaleString('tr-TR', { minimumFractionDigits: 2 }) + ' TL';
+            document.getElementById('checkout-total-price').textContent = formattedTotal;
+
+            // WhatsApp Yönlendirme Linki
+            const waMessage = `Merhaba, ben *${customerName}*.
+
+` +
+                              `📦 *Sipariş ettiğim ürünler:* ${productNamesArr.join(', ')}\n` +
+                              `💰 *Toplam Tutar:* ${formattedTotal}\n\n` +
+                              `Ödemeyi Harun SAYLAN adına gerçekleştirdim, dekontum ektedir. Onaylayabilir misiniz?`;
+
+            const waURL = `https://wa.me/${CONFIG.phone}?text=${encodeURIComponent(waMessage)}`;
+            document.getElementById('whatsapp-btn').href = waURL;
+
+            // Sayfaları Değiştir
+            document.getElementById('page-home').classList.remove('active');
+            document.getElementById('page-checkout').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function goToHome() {
+            document.getElementById('page-checkout').classList.remove('active');
+            document.getElementById('page-home').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // IBAN Kopyalama İşlevi
+        function copyIBAN() {
+            const rawIBAN = CONFIG.iban.replace(/\s+/g, '');
+            navigator.clipboard.writeText(rawIBAN).then(() => {
+                const btn = document.getElementById('copy-btn');
+                const text = document.getElementById('copy-text');
+                
+                btn.classList.add('copied');
+                text.textContent = 'Kopyalandı!';
+                btn.querySelector('i').className = 'fa-solid fa-check';
+
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    text.textContent = 'Kopyala';
+                    btn.querySelector('i').className = 'fa-regular fa-copy';
+                }, 2500);
+            });
+        }
+
+        // Opsiyonel: URL Parametreleri İle Doğrudan Ödeme Sayfası Açma
+        function checkURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('urun') || params.has('ad')) {
+                const name = params.get('ad') || 'Değerli Müşterimiz';
+                const productNames = params.get('urun') ? params.get('urun').split(',') : ['Özel Sipariş'];
+                const price = parseFloat(params.get('fiyat')) || 0;
+
+                document.getElementById('customer-input-name').value = name;
+                
+                // Yapay sepet oluştur
+                cart = productNames.map((p, index) => ({
+                    id: 999 + index,
+                    name: p.trim(),
+                    price: index === 0 ? price : 0
+                }));
+
+                updateCartUI();
+                goToCheckout();
+            }
+        }
+    </script>
+</body>
+</html>
