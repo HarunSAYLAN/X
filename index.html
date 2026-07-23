@@ -392,6 +392,79 @@
             box-shadow: 0 0 0 3px rgba(161, 107, 77, 0.15);
         }
 
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            background: rgba(75, 54, 38, 0.96);
+            color: #fff;
+            padding: 14px 18px;
+            border-radius: 999px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            box-shadow: 0 18px 34px rgba(0, 0, 0, 0.24);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+            transition: opacity 0.22s ease, transform 0.22s ease;
+            max-width: calc(100vw - 32px);
+            text-align: center;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .address-toggle {
+            border: none;
+            background: #efe2d2;
+            color: var(--text-main);
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .address-fields {
+            margin-top: 12px;
+            background: #fffaf5;
+            border: 1px solid #dcc8b0;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .address-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .address-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .address-field label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .address-field input {
+            width: 100%;
+            padding: 11px 12px;
+            background: #fffdf9;
+            border: 1px solid #bf9f82;
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 0.88rem;
+        }
+
         /* Primary Action Buttons */
         .btn-primary {
             width: 100%;
@@ -597,6 +670,8 @@
 </head>
 <body>
 
+    <div id="toast" class="toast" aria-live="polite"></div>
+
     <div class="container">
         <!-- Brand Header -->
         <div class="brand-header">
@@ -622,7 +697,45 @@
                 <!-- Customer Details Form -->
                 <div class="form-group">
                     <label for="customer-input-name"><i class="fa-regular fa-user"></i> Adınız Soyadınız</label>
-                    <input type="text" id="customer-input-name" class="form-control" placeholder="Örn: Ahmet Yılmaz">
+                    <input type="text" id="customer-input-name" class="form-control" placeholder="Örn: Ahmet Yılmaz" required>
+                    <button type="button" class="address-toggle" id="address-toggle" onclick="toggleAddressForm()">Adres Ekle</button>
+
+                    <div id="address-fields" class="address-fields" hidden>
+                        <div class="address-grid">
+                            <div class="address-field">
+                                <label for="address-city">İl</label>
+                                <input type="text" id="address-city" placeholder="Örn: İstanbul">
+                            </div>
+                            <div class="address-field">
+                                <label for="address-district">İlçe</label>
+                                <input type="text" id="address-district" placeholder="Örn: Kadıköy">
+                            </div>
+                            <div class="address-field">
+                                <label for="address-neighborhood">Mahalle</label>
+                                <input type="text" id="address-neighborhood" placeholder="Örn: Mustafa paşa">
+                            </div>
+                            <div class="address-field">
+                                <label for="address-street">Sokak / Cadde</label>
+                                <input type="text" id="address-street" placeholder="Örn: Bahariye">
+                            </div>
+                            <div class="address-field">
+                                <label for="address-building">Bina / Blok</label>
+                                <input type="text" id="address-building" placeholder="Örn: A Blok">
+                            </div>
+                            <div class="address-field">
+                                <label for="address-building-no">Bina No</label>
+                                <input type="text" id="address-building-no" placeholder="Örn: 12">
+                            </div>
+                            <div class="address-field">
+                                <label for="address-floor">Kat</label>
+                                <input type="text" id="address-floor" placeholder="Örn: 4">
+                            </div>
+                            <div class="address-field">
+                                <label for="address-door-no">Kapı No</label>
+                                <input type="text" id="address-door-no" placeholder="Örn: 8">
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Cart Total & Proceed -->
@@ -654,6 +767,11 @@
                 <div style="margin-bottom: 16px;">
                     <span style="color: var(--text-muted); font-size: 0.9rem;">Müşteri:</span>
                     <h3 id="checkout-customer-name" style="color: var(--text-main); font-size: 1.2rem;">-</h3>
+                </div>
+
+                <div id="checkout-address-wrap" style="margin-bottom: 16px; display: none;">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Adres:</span>
+                    <div id="checkout-address" style="color: var(--text-main); font-size: 0.95rem; margin-top: 4px; line-height: 1.5;">-</div>
                 </div>
 
                 <!-- Selected Items List -->
@@ -907,6 +1025,75 @@
             document.getElementById('home-total-price').textContent = total.toLocaleString('tr-TR', { minimumFractionDigits: 2 }) + ' TL';
         }
 
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            clearTimeout(showToast.hideTimeout);
+            showToast.hideTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2200);
+        }
+
+        function toggleAddressForm() {
+            const addressFields = document.getElementById('address-fields');
+            const toggleButton = document.getElementById('address-toggle');
+            const isHidden = addressFields.hidden;
+
+            addressFields.hidden = !isHidden;
+            toggleButton.textContent = isHidden ? 'Adres Alanını Kapat' : 'Adres Ekle';
+        }
+
+        function getAddressText() {
+            const addressParts = [
+                document.getElementById('address-city').value.trim(),
+                document.getElementById('address-district').value.trim(),
+                document.getElementById('address-neighborhood').value.trim(),
+                document.getElementById('address-street').value.trim(),
+                document.getElementById('address-building').value.trim(),
+                document.getElementById('address-building-no').value.trim(),
+                document.getElementById('address-floor').value.trim(),
+                document.getElementById('address-door-no').value.trim()
+            ].filter(Boolean);
+
+            return addressParts.join(', ');
+        }
+
+        function getAddressDetails() {
+            return [
+                { label: 'İl', value: document.getElementById('address-city').value.trim() },
+                { label: 'İlçe', value: document.getElementById('address-district').value.trim() },
+                { label: 'Mahalle', value: document.getElementById('address-neighborhood').value.trim() },
+                { label: 'Sokak / Cadde', value: document.getElementById('address-street').value.trim() },
+                { label: 'Bina / Blok', value: document.getElementById('address-building').value.trim() },
+                { label: 'Bina No', value: document.getElementById('address-building-no').value.trim() },
+                { label: 'Kat', value: document.getElementById('address-floor').value.trim() },
+                { label: 'Kapı No', value: document.getElementById('address-door-no').value.trim() }
+            ].filter(item => item.value !== '');
+        }
+
+        function formatAddressForMessage() {
+            return getAddressDetails()
+                .map(item => `${item.label}: ${item.value}`)
+                .join('\n');
+        }
+
+        function isAddressComplete() {
+            const requiredFields = [
+                document.getElementById('address-city'),
+                document.getElementById('address-district'),
+                document.getElementById('address-neighborhood'),
+                document.getElementById('address-street'),
+                document.getElementById('address-building'),
+                document.getElementById('address-building-no'),
+                document.getElementById('address-floor'),
+                document.getElementById('address-door-no')
+            ];
+
+            return requiredFields.every(field => field.value.trim() !== '');
+        }
+
         // Sayfa Geçişleri
         function goToCheckout() {
             if (cart.length === 0) {
@@ -915,10 +1102,40 @@
             }
 
             const customerNameInput = document.getElementById('customer-input-name').value.trim();
-            const customerName = customerNameInput || "Değerli Müşterimiz";
+            const nameInput = document.getElementById('customer-input-name');
+
+            if (!customerNameInput) {
+                showToast('Lütfen adınızı ve soyadınızı eksiksiz yazınız.');
+                nameInput.focus();
+                return;
+            }
+
+            const customerName = customerNameInput;
+            const addressText = getAddressText();
+            const formattedAddressForMessage = formatAddressForMessage();
+
+            if (!isAddressComplete()) {
+                showToast('Lütfen adres bilgilerinizi eksiksiz doldurunuz.');
+                const addressFields = document.getElementById('address-fields');
+                if (addressFields.hidden) {
+                    toggleAddressForm();
+                }
+                document.getElementById('address-city').focus();
+                return;
+            }
 
             // Ödeme Ekranı Detaylarını Hazırla
             document.getElementById('checkout-customer-name').textContent = customerName;
+            const addressWrap = document.getElementById('checkout-address-wrap');
+            const addressBox = document.getElementById('checkout-address');
+
+            if (formattedAddressForMessage) {
+                addressBox.innerHTML = formattedAddressForMessage.replace(/\n/g, '<br>');
+                addressWrap.style.display = 'block';
+            } else {
+                addressBox.textContent = '-';
+                addressWrap.style.display = 'none';
+            }
             
             const productListContainer = document.getElementById('checkout-product-list');
             productListContainer.innerHTML = '';
@@ -928,12 +1145,13 @@
 
             cart.forEach(item => {
                 total += item.price * item.quantity;
-                productNamesArr.push(`${item.name}${item.quantity > 1 ? ' x' + item.quantity : ''}`);
+                const itemLabel = item.quantity > 1 ? `${item.name} (${item.quantity} adet)` : item.name;
+                productNamesArr.push(itemLabel);
 
                 const li = document.createElement('li');
                 li.className = 'product-item';
                 li.innerHTML = `
-                    <span>${item.name}${item.quantity > 1 ? ' x' + item.quantity : ''}</span>
+                    <span>${itemLabel}</span>
                     <span style="font-weight:600">${(item.price * item.quantity).toLocaleString('tr-TR')} TL</span>
                 `;
                 productListContainer.appendChild(li);
@@ -943,12 +1161,15 @@
             document.getElementById('checkout-total-price').textContent = formattedTotal;
 
             // WhatsApp Yönlendirme Linki
+            const addressLine = formattedAddressForMessage ? `📍 *Adres:*\n${formattedAddressForMessage}\n` : '';
+
             const waMessage = `Merhaba, ben *${customerName}*.
 
 ` +
                               `📦 *Sipariş ettiğim ürünler:* ${productNamesArr.join(', ')}\n` +
+                              `${addressLine}` +
                               `💰 *Toplam Tutar:* ${formattedTotal}\n\n` +
-                              `Ödemeyi Harun SAYLAN adına gerçekleştirdim, dekontum ektedir. Onaylayabilir misiniz?`;
+                              `Ödemeyi Harun SAYLAN adına gerçekleştirdim, dekontu hemen gönderiyorum. Onaylayabilir misiniz?`;
 
             const waURL = `https://wa.me/${CONFIG.phone}?text=${encodeURIComponent(waMessage)}`;
             document.getElementById('whatsapp-btn').href = waURL;
