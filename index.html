@@ -967,6 +967,33 @@
                 image: "https://xauraglobal.com/thumb/resimler/urun/-1741858539.65707.webp/w500/h500/zc1",
                 ingredients: ["Vitamin D3", "Vitamin K2", "Vitamin C", "Magnezyum", "Omega 9"],
                 benefit: "Kemik, bağışıklık ve genel metabolik desteği destekler."
+            },
+            {
+                id: 10,
+                name: "Coffee Black 3,5 GR X 30 ADET",
+                price: 1013,
+                colors: ["#3b3026", "#8b6f4f"],
+                image: "https://xauraglobal.com/resimler/urun/-1712577819.90038.webp",
+                ingredients: ["ÇÖZÜNEBİLİR HAZIR KAHVE", "REISHI MANTARI"],
+                preparation: "BİR KAHVE FİNCANINA BİR PAKET X AURA COFFEE CLASSIC KOYUN, ÜZERİNE SICAK SU İLAVE EDİN. KAHVENİZ İÇİME HAZIRDIR."
+            },
+            {
+                id: 11,
+                name: "Coffee Latte 21 GR X 20 ADET",
+                price: 1152,
+                colors: ["#c29c72", "#7c4c35"],
+                image: "https://xauraglobal.com/resimler/urun/-1712577654.19523.webp",
+                ingredients: ["ŞEKER", "KAHVE BEYAZLATICISI", "ÇÖZÜNEBİLİR HAZIR KAHVE", "REISHI MANTARI"],
+                preparation: "BİR KAHVE FİNCANINA BİR PAKET X AURA COFFEE LATTE KOYUN, ÜZERİNE SICAK SU İLAVE EDİN. KAHVENİZ İÇİME HAZIRDIR."
+            },
+            {
+                id: 12,
+                name: "2 in 1 Coffee 14 GR X 20 ADET",
+                price: 1103,
+                colors: ["#5d4530", "#c79a60"],
+                image: "https://xauraglobal.com/resimler/urun/-1712577708.30687.webp",
+                ingredients: ["KAHVE BEYAZLATICISI", "ÇÖZÜNEBİLİR HAZIR KAHVE", "REISHI MANTARI"],
+                preparation: "BİR KAHVE FİNCANINA BİR PAKET X AURA 2 in 1 COFFEE KOYUN, ÜZERİNE SICAK SU İLAVE EDİN. KAHVENİZ İÇİME HAZIRDIR."
             }
         ];
 
@@ -1029,6 +1056,9 @@
                     </div>
                 ` : addButtonMarkup;
 
+                const infoButtonLabel = product.preparation ? 'Hazırlanışı' : 'Ne İşe Yarar?';
+                const infoText = product.preparation || product.benefit;
+
                 card.innerHTML = `
                     ${quantityMarkup}
                     <img class="product-thumb" src="${productImage}" alt="${product.name}">
@@ -1039,10 +1069,10 @@
                         <p>${product.price.toLocaleString('tr-TR')} TL</p>
                     </div>
                     <div class="product-actions">
-                        <button class="info-btn" onclick="toggleBenefit(${product.id})">Ne İşe Yarar?</button>
+                        <button class="info-btn" onclick="toggleBenefit(${product.id})">${infoButtonLabel}</button>
                         <button class="info-btn" onclick="toggleIngredients(${product.id})">İçerik</button>
                     </div>
-                    <div class="product-benefit" data-benefit-for="${product.id}">${product.benefit}</div>
+                    <div class="product-benefit" data-benefit-for="${product.id}">${infoText}</div>
                     <ul class="product-ingredients" data-ingredients-for="${product.id}">
                         ${product.ingredients.map(item => `<li>${item}</li>`).join('')}
                     </ul>
