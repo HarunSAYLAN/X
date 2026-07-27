@@ -694,6 +694,71 @@
             transform: translateY(-2px);
         }
 
+        .floating-whatsapp-wrap {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 220px;
+            pointer-events: none;
+        }
+
+        .floating-whatsapp-label {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 999px;
+            background: rgba(37, 211, 102, 0.96);
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            line-height: 1.3;
+            box-shadow: 0 12px 24px rgba(15, 74, 36, 0.18);
+            pointer-events: auto;
+        }
+
+        .floating-whatsapp-button {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #25d366, #1ebea5);
+            border: 0;
+            box-shadow: 0 18px 30px rgba(37, 211, 102, 0.35);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.3rem;
+            pointer-events: auto;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .floating-whatsapp-button:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 22px 34px rgba(37, 211, 102, 0.45);
+        }
+
+        .floating-whatsapp-label::before {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 16px;
+            height: 16px;
+            background: rgba(37, 211, 102, 0.96);
+            border-radius: 3px;
+        }
+
+        @media (min-width: 900px) {
+            .floating-whatsapp-label {
+                display: block;
+            }
+        }
+
         .info-note {
             text-align: center;
             font-size: 0.8rem;
@@ -874,6 +939,13 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="floating-whatsapp-wrap">
+        <div class="floating-whatsapp-label">Bize soru sorun</div>
+        <a href="https://wa.me/905325039279?text=Merhaba%2C%20sorum%20var.%20Yard%C4%B1m%20edebilir%20misiniz%3F" target="_blank" rel="noreferrer" class="floating-whatsapp-button" aria-label="WhatsApp soru sor">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
     </div>
 
     <!-- Application Script -->
